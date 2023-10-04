@@ -1,13 +1,24 @@
 package com.example.demo;
 
 
-import java.util.Objects;
+import jdk.jfr.DataAmount;
+import lombok.Data;
 
+import javax.validation.constraints.*;
+import java.util.Objects;
+@Data
 public class  Contact {
     private Long id;
+    @NotNull
+    @Size(min = 1, message = "名字必须至少一个字符")
     private String firstName;
+    @NotNull
+    @Size(min = 1, message = "名字必须至少一个字符")
     private String lastName;
+    @Pattern(regexp = "^1([345678])\\d{9}$", message = "无效的手机号")
     private String phoneNumber;
+    @NotBlank(message="不能为空")
+    @Email
     private String emailAddress;
 
     public void setId(Long id) {
@@ -52,13 +63,7 @@ public class  Contact {
 
     @Override
     public String toString() {
-        return "Contact{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", emailAddress='" + emailAddress + '\'' +
-                '}';
+        return this.firstName + " " + this.lastName + ":" + this.phoneNumber + " " + this.emailAddress;
     }
 
     @Override
