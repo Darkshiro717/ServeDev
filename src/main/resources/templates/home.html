@@ -1,41 +1,50 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-  <head>
+<head>
     <title>Spring Boot Contacts</title>
-  </head>
-  
-  <body>
-  <h1>Spring Boot Contact</h1>
-  <form th:action="@{/contact}" th:object="${contact}" method="post">
-    <div>
-      <label for="firstName">First Name:</label>
-      <input type="text" id="firstName" th:field="*{firstName}">
-      <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
-    </div>
-    <div>
-      <label for="lastName">Last Name:</label>
-      <input type="text" id="lastName" th:field="*{lastName}">
-      <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
-    </div>
-    <div>
-      <label for="phoneNumber">Phone Number:</label>
-      <input type="text" id="phoneNumber" th:field="*{phoneNumber}">
-      <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
-    </div>
-    <div>
-      <label for="emailAddress">Email Address:</label>
-      <input type="text" id="emailAddress" th:field="*{emailAddress}">
-      <span th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}"></span>
-    </div>
-    <input type="submit" value="Submit">
-  </form>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
 
-  <!-- 显示数据 -->
-  <!-- 显示数据 -->
-  <ul>
-    <li th:each="contact : ${contacts}" th:text="${contact}"></li>
-  </ul>
+<body>
+<h2>Spring Boot Contacts</h2>
+<form method="POST" th:object="${contact}">
+    <label for="firstName"> First Name:</label>
+    <input type="text" th:field="*{firstName}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('firstName')}"
+          th:errors="*{firstName}">firstName</span>
+    <br/>
+    <label for="lastName">Last Name:</label>
+    <input type="text" th:field="*{lastName}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('lastName')}"
+          th:errors="*{lastName}">lastName</span>
+    <br/>
+    <label for="phoneNumber">Phone #:</label>
+    <input type="text" th:field="*{phoneNumber}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('phoneNumber')}"
+          th:errors="*{phoneNumber}">phoneNumber</span>
+    <br/>
+    <label for="emailAddress">Email:</label>
+    <input type="text" th:field="*{emailAddress}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('emailAddress')}"
+          th:errors="*{emailAddress}">emailAddress</span>
+    <br/>
+    <input type="submit">
+</form>
 
-  </body>
+<ul th:each="contact1 : ${contacts}">
+    <li>
+        <span th:text="${contact1.firstName}">First</span>
+        <span th:text="${contact1.lastName}">Last</span>
+        <label>:</label>
+        <span th:text="${contact1.phoneNumber}">phoneNumber</span>
+        <span th:text="${contact1.emailAddress}">emailAddress</span>
+    </li>
+</ul>
+
+</body>
 </html>
