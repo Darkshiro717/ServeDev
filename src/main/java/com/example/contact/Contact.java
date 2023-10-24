@@ -1,6 +1,8 @@
 package com.example.contact;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,12 +10,12 @@ import javax.persistence.Id;
 import javax.validation.constraints.*;
 
 @Data
+@Document
 @Entity
 public class Contact {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
     @NotNull
     @Size(min = 1,message = "名字必须至少1个字符")
     private String firstName;
