@@ -1,41 +1,59 @@
 package com.example.contact;
 
+import java.util.Objects;
 import lombok.Data;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.validation.constraints.*;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
-@Entity
-public class Contact {
-
-    @Id
+@AllArgsConstructor
+@NoArgsConstructor(access=AccessLevel.PUBLIC, force=true)
+public class Contact{
     private String id;
+
     @NotNull
-    @Size(min = 1,message = "名字必须至少1个字符")
+    @Size(min = 1, message = "名字必须至少1个字符")
     private String firstName;
+
     @NotNull
-    @Size(min=1,message = "名字必须至少1个字符")
+    @Size(min = 1, message = "名字必须至少1个字符")
     private String lastName;
-    @Pattern(regexp = "^1([34578])\\d{9}$",message = "无效的手机号码")
+
+    @Pattern(regexp = "^1([345678])\\d{9}$", message = "无效的手机号码")
     private String phoneNumber;
-    @NotBlank(message = "不能为空")
+
+    @NotBlank(message="不能为空")
     @Email
     private String emailAddress;
-/**
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+
+    public String getLastName() {
+        return lastName;
+    }
+
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
     @Override
     public String toString() {
-        return "Contact{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", emailAddress='" + emailAddress + '\'' +
-                '}';
+        return this.firstName + " " + this.lastName + " : " + this.phoneNumber + ", " + this.emailAddress;
     }
 
     @Override
@@ -49,5 +67,5 @@ public class Contact {
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName, phoneNumber, emailAddress);
-    }*/
+    }
 }
