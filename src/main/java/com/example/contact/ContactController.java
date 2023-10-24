@@ -2,50 +2,45 @@ package com.example.contact;
 
 import com.example.contact.data.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import javax.validation.Valid;
 
-@Slf4j
+
 @Controller
-@RequestMapping("/")
-@SessionAttributes("contacts")
 public class ContactController {
+//    private List<Contact> contacts = new ArrayList<>();
 
     private ContactRepository contactRepository;
 
-    @ModelAttribute(name = "contact")
-    public Contact contact() {
-        return new Contact();
+    public ContactController(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
     }
 
-    @ModelAttribute(name = "contacts")
-    public void addContactsToModel(Model model) {
-        model.addAttribute("contacts",contactRepository.findAll());
-    }
-
-    public ContactController(ContactRepository contactRepo){
-        this.contactRepository=contactRepo;
-    }
-
-    @GetMapping
-    public String showContactForm() {
+    @GetMapping("/")
+    public String GetForm(Model model) {
+        model.addAttribute("contact", new Contact());
+        model.addAttribute("contacts", contactRepository.findAll());
         return "home";
     }
 
-    @PostMapping
-    public String process(@Valid Contact contact, Errors errors, SessionStatus sessionStatus) {
-
-        if (errors.hasErrors()) {
+    @PostMapping("/contact")
+    public String SubmitForm(@Valid @ModelAttribute Contact contact, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("contacts", contactRepository.findAll());
             return "home";
         }
 
         contactRepository.save(contact);
-        sessionStatus.setComplete();
-
-        return "redirect:/";
+        model.addAttribute("contact", new Contact());
+        model.addAttribute("contacts",contactRepository.findAll());
+        return "home";
     }
+
 }
